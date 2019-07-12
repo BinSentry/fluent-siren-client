@@ -37,13 +37,14 @@ class Client {
 
     const entity = new Entity(body);
     entity._client = this;
-    for (const subEntity of entity.entities) {
+
+    for (const subEntity of entity.entities || []) {
       subEntity._client = this;
     }
-    for (const link of entity.links) {
+    for (const link of entity.links || []) {
       link._client = this;
     }
-    for (const action of entity.actions) {
+    for (const action of entity.actions || []) {
       action._client = this;
     }
 

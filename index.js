@@ -1,7 +1,7 @@
 const Entity = require('siren-parser');
 const Action = require('siren-parser/dist/Action');
 const Link = require('siren-parser/dist/Link');
-const thing = new Client(())
+
 class Client {
   /**
    * performs an async HTTP request
@@ -12,7 +12,7 @@ class Client {
    * @callback request
    * @param {string} uri (required) uri of the resource
    * @param {string} method (required) HTTP request verb ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')
-   * @param {object} body (optional) body of the request
+   * @param {object} fieldValues (optional) field names and values for the request
    * @return {object} body: response body, contentType: Content-Type response header
    */
 

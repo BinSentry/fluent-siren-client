@@ -36,8 +36,13 @@ class Client {
     }
 
     const entity = new Entity(body);
-    entity._client = this;
+    this.attachClient(entity);
 
+    return entity;
+  }
+
+  attachClient(entity) {
+    entity._client = this;
     for (const subEntity of entity.entities || []) {
       subEntity._client = this;
     }
@@ -47,8 +52,6 @@ class Client {
     for (const action of entity.actions || []) {
       action._client = this;
     }
-
-    return entity;
   }
 }
 
@@ -75,5 +78,10 @@ Link.prototype.follow = async function () {
  * @param {object} fieldValues field values { fieldName: value }
  */
 Action.prototype.perform = async function (fieldValues) {
-  return this._client.perform(this.href, this.method, fieldValues);
+  const hiddenFields = this.fields.filter(field => field.type.toLowerCase() === 'hidden');
+  const hiddenValues = hiddenFields.reduce((values, field) => {
+    values[field.name] = field.value;
+    return values;
+  }, {});
+  return this._client.perform(this.href, this.method, { ...hiddenValues, ...fieldValues });
 }

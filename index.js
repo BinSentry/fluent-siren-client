@@ -59,7 +59,7 @@ module.exports = Client;
 
 const SIREN_CONTENT_TYPE = 'application/vnd.siren+json';
 function _isSiren(contentType) {
-  return contentType.toLowerCase().includes(SIREN_CONTENT_TYPE);
+  return true || contentType.toLowerCase().includes(SIREN_CONTENT_TYPE);
 }
 
 

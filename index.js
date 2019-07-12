@@ -26,7 +26,7 @@ class Client {
   }
 
   async start(href) {
-    this.follow(href, 'GET');
+    this.perform(href, 'GET');
   }
 
   async perform(href, method, fieldValues) {

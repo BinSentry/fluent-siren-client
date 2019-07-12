@@ -1,16 +1,25 @@
 const Entity = require('siren-parser');
 const Action = require('siren-parser/dist/Action');
 const Link = require('siren-parser/dist/Link');
-
+const thing = new Client(())
 class Client {
+  /**
+   * performs an async HTTP request
+   * returns object { body, contentType }
+   *  body: response body
+   *  contentType: Content-Type response header
+   *
+   * @callback request
+   * @param {string} uri (required) uri of the resource
+   * @param {string} method (required) HTTP request verb ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')
+   * @param {object} body (optional) body of the request
+   * @return {object} body: response body, contentType: Content-Type response header
+   */
+
   /**
    * Setup the fluent siren client
    *
-   * @param {function} requestFn requestFn performs an async http request with signature (uri, method, body)
-   *  uri: required, string
-   *  method: required, string
-   *  body: optional, object
-   *  returns response body and Content-Type header in format { body, contentType }
+   * @param {request} requestFn performs an async HTTP request
    */
   constructor(requestFn) {
     this._requestFn = requestFn;

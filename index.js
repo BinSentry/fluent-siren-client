@@ -26,7 +26,7 @@ class Client {
   }
 
   async start(href) {
-    this.perform(href, 'GET');
+    return this.perform(href, 'GET');
   }
 
   async perform(href, method, fieldValues) {
@@ -37,6 +37,7 @@ class Client {
 
     const entity = new Entity(body);
     entity._client = this;
+    return entity;
   }
 }
 

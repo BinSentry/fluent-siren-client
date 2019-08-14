@@ -31,7 +31,7 @@ class Client {
 
   async perform(href, method, fieldValues) {
     const { body, contentType } = await this._requestFn(href, method, fieldValues);
-    if (!_isSiren(contentType)) {
+    if (!body || !contentType || !_isSiren(contentType)) {
       return body;
     }
 

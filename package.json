@@ -1,0 +1,29 @@
+{
+  "name": "fluent-siren-client",
+  "version": "1.0.0",
+  "description": "Fluent client for Siren Hyper Media APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BinSentry/fluent-siren-client.git"
+  },
+  "keywords": [
+    "siren",
+    "hypermedia",
+    "rest",
+    "client",
+    "hateaos"
+  ],
+  "author": "BinSentry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BinSentry/fluent-siren-client/issues"
+  },
+  "homepage": "https://github.com/BinSentry/fluent-siren-client#readme",
+  "dependencies": {
+    "siren-parser": "^8.2.0"
+  }
+}

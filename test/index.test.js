@@ -117,8 +117,8 @@ describe('Client', function () {
       });
       it('should block not whitelisted origin', async () => {
         const client = new Client(requestFn, { originWhitelist: 'http://api.example.com' });
-        expect(client.start('http://some.other.origin.com')).to.be.rejectedWith(Error);
-        expect(client.perform('http://some.other.origin.com')).to.be.rejectedWith(Error);
+        await expect(client.start('http://some.other.origin.com')).to.be.rejectedWith(Error);
+        await expect(client.perform('http://some.other.origin.com')).to.be.rejectedWith(Error);
       });
       it('should be ignored when following external links', async () => {
         const client = new Client(requestFn, { originWhitelist: 'http://api.example.com' });

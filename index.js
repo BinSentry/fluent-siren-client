@@ -39,8 +39,8 @@ class Client {
 
   /**
    * Starts a client by fetching the provided href
-   * @param {string} href
-   * @returns {Promise<Entity>}
+   * @param {string} href href of the resource
+   * @returns {Promise<Entity>} a promise that resolves with a siren entity
    */
   async start(href) {
     return this.perform(href, 'GET');
@@ -48,10 +48,10 @@ class Client {
 
   /**
    * Performs a request
-   * @param {string} href
-   * @param {string} method
-   * @param {Object} [fieldValues]
-   * @returns {Promise<Entity>}
+   * @param {string} href href of the resource
+   * @param {string} method HTTP request verb ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')
+   * @param {Object} [fieldValues] field names and values for the request
+   * @returns {Promise<Entity>} a promise that resolves with a siren entity
    */
   async perform(href, method, fieldValues) {
     _verifyOrigin(href, this._options.originWhitelist);
@@ -60,7 +60,7 @@ class Client {
 
   /**
    * Attaches this client to an existing entity
-   * @param {Entity} entity
+   * @param {Entity} entity siren entity
    */
   attachClient(entity) {
     entity._client = this;

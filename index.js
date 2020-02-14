@@ -3,7 +3,8 @@ const Action = require('siren-parser/dist/Action');
 const Link = require('siren-parser/dist/Link');
 
 /**
- * siren-parser wrapper that supports following links and performing actions
+ * Fluent client for Siren Hyper Media APIs
+ * The client supports following links and performing actions
  */
 class Client {
   /**

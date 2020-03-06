@@ -66,7 +66,7 @@ class Client {
   attachClient(entity) {
     entity._client = this;
     for (const subEntity of entity.entities || []) {
-      subEntity._client = this;
+      this.attachClient(subEntity);
     }
     for (const link of entity.links || []) {
       link._client = this;

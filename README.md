@@ -13,7 +13,7 @@ Install from NPM:
 npm install fluent-siren-client
 ```
 
-#Usage
+## Usage
 
 ```javascript
 describe('SirenClient', () => {

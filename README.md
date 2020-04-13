@@ -1,7 +1,7 @@
 # fluent-siren-client
 Fluent client for Siren Hyper Media APIs
 
-Fetches a [Siren](https://github.com/kevinswiber/siren) object from the given href and parses it into a
+Fetches a [Siren](https://github.com/kevinswiber/siren) object using the provided `requestFn` and parses it into a
 [node-siren-parser](https://github.com/Brightspace/node-siren-parser) Entity. 
 Configures the Entity in such a way that uri links can be followed, and actions can be performed. Result of 
 following a link is another fluent Entity.

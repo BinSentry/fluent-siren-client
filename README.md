@@ -33,7 +33,7 @@ const rp = require('request-promise');
 async function requestFn(uri, method, fieldValues) {
   const params = {
     defaults: {
-      headers: { Authorization: `Bearer ${authorizationToken}` }, // this line can be used for injecting authorization token
+      headers: { Authorization: `Bearer ${authorizationToken}` }, // inject authorization token
       json: true,
       resolveWithFullResponse: true,
     },

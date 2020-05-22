@@ -50,7 +50,7 @@ async function requestFn(uri, method, fieldValues) {
   }
 
   const request = rp(params);
-  const response = await request(options);
-  return { body: response.body, contentType: response.headers['content-type'], statusCode: response.statusCode };
+  const { body, headers, statusCode } = await request(options);
+  return { body, contentType: headers['content-type'], statusCode };
 }
 ```

@@ -9,19 +9,21 @@ const Link = require('siren-parser/dist/Link');
 class Client {
   /**
    * performs an async HTTP request
-   * returns object { body, contentType }
+   * returns object { body, contentType, response }
    *  body: response body
    *  contentType: Content-Type response header
+   *  response: whole response
    *
    * @typedef {Object} Response
    * @property body response body
    * @property contentType Content-Type response header
+   * @property response whole response
    *
    * @callback requestFn
    * @param {string} href (required) href of the resource
    * @param {string} method (required) HTTP request verb ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')
    * @param {Object} [fieldValues] (optional) field names and values for the request
-   * @return {Response} body: response body, contentType: Content-Type response header
+   * @return {Response} body: response body, contentType: Content-Type response header, response: whole response
    */
 
   /**
@@ -80,13 +82,17 @@ class Client {
 module.exports = Client;
 
 async function _perform(client, href, method, fieldValues) {
-  const { body, contentType } = await client._requestFn(href, method, fieldValues);
+  const { body, contentType, response } = await client._requestFn(href, method, fieldValues);
   if (!body || !contentType || !_isSiren(contentType)) {
     return body;
   }
 
   const entity = new Entity(body);
   client.attachClient(entity);
+
+  if (response) {
+    entity._response = response;
+  }
 
   return entity;
 }
@@ -115,6 +121,10 @@ function _isSiren(contentType) {
 Entity.prototype.follow = async function () {
   const self = this.getLinkByRel('self');
   return _perform(this._client, self.href, 'GET');
+};
+
+Entity.prototype.getResponse = function () {
+  return this._response;
 };
 
 Link.prototype.follow = async function () {

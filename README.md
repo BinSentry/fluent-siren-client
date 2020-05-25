@@ -21,6 +21,7 @@ const entity = await client.start('http://api.example.com');
 const linkedEntity = await entity.getLinkByRel('external').follow();
 const subEntity = await entity.getSubEntity('item').follow();
 const actionResult = await entity.getActionByName('action').perform();
+const actionResultStatusCode = actionResult.getResponse().statusCode;
 ```
 
 ## Setup
@@ -50,6 +51,7 @@ async function requestFn(uri, method, fieldValues) {
 
   const request = rp(params);
   const response = await request(options);
-  return { body: response.body, contentType: response.headers['content-type'] };
+  const { body, headers } = response;
+  return { body, contentType: headers['content-type'], response };
 }
 ```

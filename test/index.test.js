@@ -77,7 +77,7 @@ describe('Client', function () {
       const client = new Client(requestFn);
       const entity = await client.start('http://api.example.com');
       expect(entity.properties.name).to.equal('api');
-      expect(entity.getRawResponse()).to.eql({ statusCode: 200 });
+      expect(entity.getResponse()).to.eql({ statusCode: 200 });
     });
   });
 
@@ -113,7 +113,7 @@ describe('Client', function () {
       const entity = await client.start('http://api.example.com');
       const actionResult = await entity.getActionByName('action').perform();
       expect(actionResult.properties.name).to.equal('action');
-      expect(actionResult.getRawResponse()).to.eql({ statusCode: 201 });
+      expect(actionResult.getResponse()).to.eql({ statusCode: 201 });
     });
   });
 

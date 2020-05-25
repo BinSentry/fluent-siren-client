@@ -21,7 +21,7 @@ const entity = await client.start('http://api.example.com');
 const linkedEntity = await entity.getLinkByRel('external').follow();
 const subEntity = await entity.getSubEntity('item').follow();
 const actionResult = await entity.getActionByName('action').perform();
-const actionResultStatusCode = actionResult.getRawResponse().statusCode;
+const actionResultStatusCode = actionResult.getResponse().statusCode;
 ```
 
 ## Setup

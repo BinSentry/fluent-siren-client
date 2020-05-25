@@ -9,21 +9,21 @@ const Link = require('siren-parser/dist/Link');
 class Client {
   /**
    * performs an async HTTP request
-   * returns object { body, contentType, statusCode }
+   * returns object { body, contentType, response }
    *  body: response body
    *  contentType: Content-Type response header
-   *  statusCode: response status code
+   *  response: raw response
    *
    * @typedef {Object} Response
    * @property body response body
    * @property contentType Content-Type response header
-   * @property statusCode response status code
+   * @property response raw response
    *
    * @callback requestFn
    * @param {string} href (required) href of the resource
    * @param {string} method (required) HTTP request verb ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')
    * @param {Object} [fieldValues] (optional) field names and values for the request
-   * @return {Response} body: response body, contentType: Content-Type response header, statusCode: response status code
+   * @return {Response} body: response body, contentType: Content-Type response header, response: raw response
    */
 
   /**
@@ -82,7 +82,7 @@ class Client {
 module.exports = Client;
 
 async function _perform(client, href, method, fieldValues) {
-  const { body, contentType, statusCode } = await client._requestFn(href, method, fieldValues);
+  const { body, contentType, response } = await client._requestFn(href, method, fieldValues);
   if (!body || !contentType || !_isSiren(contentType)) {
     return body;
   }
@@ -90,8 +90,8 @@ async function _perform(client, href, method, fieldValues) {
   const entity = new Entity(body);
   client.attachClient(entity);
 
-  if (statusCode) {
-    entity._statusCode = statusCode;
+  if (response) {
+    entity._rawResponse = response;
   }
 
   return entity;
@@ -123,8 +123,8 @@ Entity.prototype.follow = async function () {
   return _perform(this._client, self.href, 'GET');
 };
 
-Entity.prototype.getStatusCode = function () {
-  return this._statusCode;
+Entity.prototype.getRawResponse = function () {
+  return this._rawResponse;
 };
 
 Link.prototype.follow = async function () {

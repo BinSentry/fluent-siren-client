@@ -10,7 +10,9 @@ describe('Client', function () {
           }
         },
         contentType: 'application/vnd.siren+json',
-        statusCode: 200,
+        response: {
+          statusCode: 200
+        },
       };
     }
     if (href === 'http://api.example.com/entity') {
@@ -21,7 +23,9 @@ describe('Client', function () {
           }
         },
         contentType: 'application/vnd.siren+json',
-        statusCode: 200,
+        response: {
+          statusCode: 200
+        },
       };
     }
     if (href === 'http://api.example.com/action') {
@@ -32,7 +36,9 @@ describe('Client', function () {
           }
         },
         contentType: 'application/vnd.siren+json',
-        statusCode: 201,
+        response: {
+          statusCode: 201
+        },
       };
     }
     if (href === 'http://api.example.com') {
@@ -58,7 +64,9 @@ describe('Client', function () {
           }],
         },
         contentType: 'application/vnd.siren+json',
-        statusCode: 200,
+        response: {
+          statusCode: 200
+        },
       };
     }
     return {};
@@ -69,7 +77,7 @@ describe('Client', function () {
       const client = new Client(requestFn);
       const entity = await client.start('http://api.example.com');
       expect(entity.properties.name).to.equal('api');
-      expect(entity.getStatusCode()).to.equal(200);
+      expect(entity.getRawResponse()).to.eql({ statusCode: 200 });
     });
   });
 
@@ -105,7 +113,7 @@ describe('Client', function () {
       const entity = await client.start('http://api.example.com');
       const actionResult = await entity.getActionByName('action').perform();
       expect(actionResult.properties.name).to.equal('action');
-      expect(actionResult.getStatusCode()).to.equal(201);
+      expect(actionResult.getRawResponse()).to.eql({ statusCode: 201 });
     });
   });
 

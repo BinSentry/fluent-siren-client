@@ -1,7 +1,7 @@
 describe('Client', function () {
   const Client = require('../index');
 
-  function requestFn(href) {
+  function requestFn(href, method, fieldValues) {
     if (href === 'http://external.website.com') {
       return {
         body: {
@@ -69,6 +69,42 @@ describe('Client', function () {
         },
       };
     }
+    if (href === 'http://api.example.com/action-with-hidden-object-fields') {
+      return {
+        body: {
+          properties: {
+            name: 'api',
+            fieldValues,
+          },
+          links: [{
+            rel: ['external'],
+            href: 'http://external.website.com',
+          }],
+          entities: [{
+            rel: ['item'],
+            links: [{
+              rel: ['self'],
+              href: 'http://api.example.com/entity',
+            }],
+          }],
+          actions: [{
+            name: 'action',
+            href: 'http://api.example.com/action-with-hidden-object-fields',
+            method: 'POST',
+            fields: [{
+              name: 'base[level1][level2]',
+              type: 'hidden',
+              value: 'from-hidden',
+            }],
+          }],
+        },
+        contentType: 'application/vnd.siren+json',
+        response: {
+          statusCode: 200
+        },
+      };
+    }
+
     return {};
   }
 
@@ -114,6 +150,33 @@ describe('Client', function () {
       const actionResult = await entity.getActionByName('action').perform();
       expect(actionResult.properties.name).to.equal('action');
       expect(actionResult.getResponse()).to.eql({ statusCode: 201 });
+    });
+    it('should pull in nested hidden fields', async () => {
+      const client = new Client(requestFn);
+      const entity = await client.start('http://api.example.com/action-with-hidden-object-fields');
+      const actionResult = await entity.getActionByName('action').perform({
+        base: { alternate: 'test' }
+      });
+      expect(actionResult.properties).to.eql({
+        "fieldValues": {
+          "base": {"alternate": "test"},
+          "base[level1][level2]": "from-hidden"
+        },
+        "name": "api"
+      });
+    });
+    it('should ignore nested hidden fields when includeHiddenFields is false', async () => {
+      const client = new Client(requestFn);
+      const entity = await client.start('http://api.example.com/action-with-hidden-object-fields');
+      const actionResult = await entity.getActionByName('action').perform({
+        base: { alternate: 'test' }
+      }, { includeHiddenFields: false });
+      expect(actionResult.properties).to.eql({
+        "fieldValues": {
+          "base": {"alternate": "test"},
+        },
+        "name": "api"
+      });
     });
   });
 

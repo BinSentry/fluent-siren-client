@@ -135,12 +135,21 @@ Link.prototype.follow = async function () {
  * Perform this action with the given fieldValues
  *
  * @param {Object} fieldValues field values { fieldName: value }
+ * @param {Object} options
+ * @param {boolean} options.includeHiddenFields Whether or not to merge in the existing hidden fields.  true by default
+ * to preserve existing behavior. When true, there is an issue because when the action sends the body as form-data, the
+ * structured data object is flattened. The fieldValues passed in, however, are expected to be a structured object.
+ * It is also just generally inconsistent how we represent form data using structured objects.
  */
-Action.prototype.perform = async function (fieldValues) {
-  const hiddenFields = this.fields && this.fields.filter(field => field.type.toLowerCase() === 'hidden') || [];
-  const hiddenValues = hiddenFields.reduce((values, field) => {
-    values[field.name] = field.value;
-    return values;
-  }, {});
-  return _perform(this._client, this.href, this.method, { ...hiddenValues, ...fieldValues });
+Action.prototype.perform = async function (fieldValues, { includeHiddenFields = true } = {}) {
+  let fieldValuesToSend = fieldValues;
+  if (includeHiddenFields) {
+    const hiddenFields = this.fields && this.fields.filter(field => field.type.toLowerCase() === 'hidden') || [];
+    const hiddenValues = hiddenFields.reduce((values, field) => {
+      values[field.name] = field.value;
+      return values;
+    }, {});
+    fieldValuesToSend = { ...hiddenValues, ...fieldValues };
+  }
+  return _perform(this._client, this.href, this.method, fieldValuesToSend);
 };
